@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Loader2, Calendar, Clock, User, BookOpen, TrendingUp } from "lucide-react"
+import { AnimatedGradientText } from "@/components/ui/animated-gradient-text"
 
 interface AttendanceData {
   course: {
@@ -47,22 +48,22 @@ interface AttendanceData {
 const COURSES = [
   {
     id: "399b4f79-41c2-4de6-9e8a-d9e42b395857",
-    name: "Understanding India - D",
+    name: "Understanding India",
     code: "UI",
   },
   {
     id: "0a153c7b-d828-4867-98d0-64b750b5cb29",
-    name: "Self and Society - D",
+    name: "Self and Society",
     code: "SAS",
   },
   {
     id: "01e93bff-ce41-4d71-a74d-12c3def031d8",
-    name: "Global Grand Challenges - D",
+    name: "Global Grand Challenges",
     code: "GGC",
   },
   {
     id: "1691623b-2ab2-45ad-8b79-5ecd18934212",
-    name: "Social Communication - D",
+    name: "Social Communication",
     code: "SC",
   },
 ]
@@ -147,8 +148,8 @@ export default function AttendanceTracker() {
     <div className="min-h-screen max-w-screen bg-black text-white p-6">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold text-balance">Attendance Tracker</h1>
+        <div className="text-center mt-20 space-y-4">
+          <h1 className="text-4xl font-bold text-balance">Attendance Tracker by <AnimatedGradientText>Ansh Sharma</AnimatedGradientText></h1>
           <p className="text-muted-foreground text-lg">
             Select a course and enter your bearer token to view attendance data
           </p>
@@ -296,7 +297,7 @@ export default function AttendanceTracker() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {attendanceData.lectures.map((lecture) => (
+                        {attendanceData.lectures.slice().reverse().map((lecture) => (
                         <TableRow key={lecture.lectureId} className="border-gray-800 hover:bg-gray-800/30">
                           <TableCell className="font-medium">{formatDate(lecture.date)}</TableCell>
                           <TableCell className="text-muted-foreground">
