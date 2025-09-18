@@ -9,11 +9,11 @@ export function FloatingHeader() {
   }
 
   const handleLinkedinClick = () => {
-    window.open("https://linkedin.com/in/ansh_sx", "_blank")
+    window.open("https://linkedin.com/in/anshsx", "_blank")
   }
 
   const handleInstagramClick = () => {
-    window.open("https://instagram.com/anshxs", "_blank")
+    window.open("https://instagram.com/ansh_xs", "_blank")
   }
 
   return (
