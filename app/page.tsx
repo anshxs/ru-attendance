@@ -80,6 +80,21 @@ const COURSES = [
     id: "fb46ed93-490c-43e6-8439-da0d97d9d690",
     name: "Psychology of Individual differences",
     code: "PoId",
+  },
+  {
+    id: "fc47dc85-bb55-4238-90e5-62a5a3f3abfd",
+    name: "Applied Business Analytics for Decision Making",
+    code: "ABADM",
+  },
+  {
+    id: "9431a4fe-f142-489f-9a19-921f346e73d0",
+    name: "Problem Solving and Programming",
+    code: "PSP",
+  },
+  {
+    id: "c8214da6-e05f-4609-91df-da74acc3ca47",
+    name: "Mathematics majors",
+    code: "MM",
   }
 ]
 
