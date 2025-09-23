@@ -52,11 +52,6 @@ const COURSES = [
     code: "UI",
   },
   {
-    id: "0a153c7b-d828-4867-98d0-64b750b5cb29",
-    name: "Self and Society",
-    code: "SAS",
-  },
-  {
     id: "01e93bff-ce41-4d71-a74d-12c3def031d8",
     name: "Global Grand Challenges",
     code: "GGC",
@@ -92,10 +87,15 @@ const COURSES = [
     code: "PSP",
   },
   {
-    id: "c8214da6-e05f-4609-91df-da74acc3ca47",
+    id: "9ec7786a-4452-4598-bec8-af3d4b51ce76",
     name: "Mathematics majors",
     code: "MM",
-  }
+  },
+  {
+    id: "9ec7786a-4452-4598-bec8-af3d4b51ce76",
+    name: "Mathematics I (Foundation)",
+    code: "MIF",
+  },
 ]
 
 export default function AttendanceTracker() {
