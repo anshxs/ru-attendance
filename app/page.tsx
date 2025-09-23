@@ -66,6 +66,21 @@ const COURSES = [
     name: "Social Communication",
     code: "SC",
   },
+  {
+    id: "ae23fa9d-9cbf-4e28-9b3d-8e4874b0c9e5",
+    name: "Introduction to Psychology",
+    code: "ITP",
+  },
+  {
+    id: "6797d2a6-a998-432b-8683-405cb23b45d9",
+    name: "Development of Psychological thought",
+    code: "DoPT",
+  },
+  {
+    id: "fb46ed93-490c-43e6-8439-da0d97d9d690",
+    name: "Psychology of Individual differences",
+    code: "PoId",
+  }
 ]
 
 export default function AttendanceTracker() {
