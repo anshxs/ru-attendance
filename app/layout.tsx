@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
-import { FloatingHeader } from "@/components/floating-header";
-import { LeftFloatingHeader } from "@/components/left-floating-header";
+import { AuthProvider } from "@/lib/auth-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,9 +27,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`font-sans ${geistSans.variable} ${geistMono.variable} bg-background text-foreground transition-colors duration-300`}>
-        <LeftFloatingHeader />
-        <FloatingHeader />
-        <Suspense fallback={null}>{children}</Suspense>
+        <AuthProvider>
+          <Suspense fallback={null}>{children}</Suspense>
+        </AuthProvider>
       </body>
     </html>
   )

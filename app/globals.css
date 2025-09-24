@@ -47,6 +47,11 @@
     background-position: var(--bg-size, 300%) 0;
     }
   }
+  @keyframes gradient {
+  to {
+    background-position: var(--bg-size, 300%) 0;
+    }
+  }
 }
 
 :root {
@@ -124,5 +129,20 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    /* IE and Edge */
+    -ms-overflow-style: none;
+    
+    /* Firefox */
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    /* Safari and Chrome */
+    display: none;
   }
 }
