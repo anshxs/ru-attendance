@@ -6,11 +6,14 @@ import { getAuthToken, getUserProfile, UserProfile } from '@/lib/auth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ProtectedRoute } from '@/components/protected-route';
 import { DashboardLayout } from '@/components/dashboard-layout';
-import { Users, Key, GraduationCap, Mail, Phone, Home, Loader2, AlertCircle, Download, FileText, Image, File } from 'lucide-react';
+import { Users, Key, GraduationCap, Mail, Phone, Home, Loader2, AlertCircle, Download, FileText, Image, File, Crown, Sparkles } from 'lucide-react';
 import { MagicCard } from '@/components/ui/magic-card';
+import { usePremium } from '@/lib/premium-context';
+import { Badge } from '@/components/ui/badge';
 
 function DashboardContent() {
   const { user } = useAuth();
+  const { isPremium } = usePremium();
   const accessToken = getAuthToken();
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -77,10 +80,23 @@ function DashboardContent() {
       <div className="min-h-screen bg-black p-6 space-y-6">
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">Complete User Profile</h1>
-          <p className="text-zinc-400">
-            Welcome back, {userProfile?.firstName || 'User'}! Here's your complete profile information.
-          </p>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-bold text-white mb-2">Complete User Profile</h1>
+              <p className="text-zinc-400">
+                Welcome back, {userProfile?.firstName || 'User'}! Here's your complete profile information.
+              </p>
+            </div>
+            {isPremium && (
+              <div className="sm:ml-4">
+                <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-semibold px-3 py-1 text-sm">
+                  <Crown className="h-4 w-4 mr-2" />
+                  Premium User
+                  <Sparkles className="h-4 w-4 ml-2" />
+                </Badge>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Personal Information Grid */}

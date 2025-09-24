@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
 import { AuthProvider } from "@/lib/auth-context";
+import { PremiumProvider } from "@/lib/premium-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +29,9 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={`font-sans ${geistSans.variable} ${geistMono.variable} bg-background text-foreground transition-colors duration-300`}>
         <AuthProvider>
-          <Suspense fallback={null}>{children}</Suspense>
+          <PremiumProvider>
+            <Suspense fallback={null}>{children}</Suspense>
+          </PremiumProvider>
         </AuthProvider>
       </body>
     </html>

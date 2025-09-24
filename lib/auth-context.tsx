@@ -43,7 +43,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       setAuthToken(response.userToken);
       setIsAuthenticated(true);
-      setUser({ role: response.role, permissions: response.permissions });
+      setUser({ 
+        email: credentials.email,
+        role: response.role, 
+        permissions: response.permissions 
+      });
     } catch (error) {
       console.error('Login error:', error);
       throw error;

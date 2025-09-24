@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ProtectedRoute } from '@/components/protected-route';
 import { DashboardLayout } from '@/components/dashboard-layout';
+import { PremiumGuard } from '@/components/premium-guard';
 import { 
   CheckCircle, 
   XCircle, 
@@ -212,10 +213,10 @@ function AllGatepassesContent() {
             {gatepasses.data.map((gatepass) => (
             <MagicCard className='p-2 rounded-2xl' key={gatepass.id}>
               <Card key={gatepass.id} className="bg-black border-zinc-800">
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="space-y-1">
-                      <div className="flex items-center space-x-3">
+                <CardContent className="p-4 sm:p-6">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
+                    <div className="space-y-1 flex-1">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
                         <h3 className="text-lg font-semibold text-white">
                           {gatepass.student.firstName} {gatepass.student.lastName}
                         </h3>
@@ -227,33 +228,33 @@ function AllGatepassesContent() {
                     </div>
                     
                     {gatepass.status === 'CREATED' && (
-                      <div className="flex space-x-2">
+                      <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                         <Button
                           size="sm"
                           onClick={() => handleApprove(gatepass.id)}
                           disabled={isActionLoading === gatepass.id}
-                          className="bg-green-600 hover:bg-green-700 text-white"
+                          className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto"
                         >
                           {isActionLoading === gatepass.id ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
                           ) : (
                             <CheckCircle className="h-4 w-4" />
                           )}
-                          Approve
+                          <span className="ml-1">Approve</span>
                         </Button>
                         <Button
                           size="sm"
                           variant="destructive"
                           onClick={() => handleReject(gatepass.id)}
                           disabled={isActionLoading === gatepass.id}
-                          className="bg-red-600 hover:bg-red-700"
+                          className="bg-red-600 hover:bg-red-700 w-full sm:w-auto"
                         >
                           {isActionLoading === gatepass.id ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
                           ) : (
                             <XCircle className="h-4 w-4" />
                           )}
-                          Reject
+                          <span className="ml-1">Reject</span>
                         </Button>
                       </div>
                     )}
@@ -365,7 +366,9 @@ function AllGatepassesContent() {
 export default function AllGatepassesPage() {
   return (
     <ProtectedRoute>
-      <AllGatepassesContent />
+      <PremiumGuard>
+        <AllGatepassesContent />
+      </PremiumGuard>
     </ProtectedRoute>
   );
 }

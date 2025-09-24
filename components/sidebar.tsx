@@ -13,10 +13,12 @@ import {
   Calendar,
   BookOpen,
   Users,
-  Utensils
+  Utensils,
+  Lock
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/auth-context';
+import { usePremium } from '@/lib/premium-context';
 import { AnimatedGradientText } from './ui/animated-gradient-text';
 
 interface SidebarProps {
@@ -29,37 +31,46 @@ const sidebarItems = [
     name: 'Dashboard',
     href: '/dashboard',
     icon: LayoutDashboard,
+    isPremium: false,
   },
   {
     name: 'Courses',
     href: '/courses',
     icon: BookOpen,
+    isPremium: false,
   },
   {
     name: 'Calendar',
     href: '/calendar',
     icon: Calendar,
+    isPremium: false,
   },
   {
     name: 'Mess Menu',
     href: '/mess',
     icon: Utensils,
+    isPremium: false,
   },
   {
     name: 'My Gatepasses',
     href: '/gatepass',
     icon: CreditCard,
+    isPremium: true,
+    premiumName: '👑 My Gatepasses',
   },
   {
     name: 'All Gatepasses',
     href: '/gatepasses',
     icon: Users,
+    isPremium: true,
+    premiumName: '👑 All Gatepasses',
   },
 ];
 
 export function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const pathname = usePathname();
   const { logout } = useAuth();
+  const { isPremium, isLoading: premiumLoading } = usePremium();
 
   return (
     <>
@@ -94,26 +105,35 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
           {sidebarItems.map((item) => {
             const isActive = pathname === item.href;
             const Icon = item.icon;
+            const canAccess = !item.isPremium || isPremium;
             
+            // Don't show premium items if user doesn't have premium access
+            if (item.isPremium && !isPremium) {
+              return null;
+            }
+
             return (
               <Link
                 key={item.name}
                 href={item.href}
                 onClick={() => onToggle()}
                 className={cn(
-                  "flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors duration-200",
+                  "flex items-center justify-between px-3 py-2 rounded-lg transition-colors duration-200",
                   isActive 
                     ? "bg-white text-black" 
                     : "text-zinc-300 hover:bg-zinc-900 hover:text-white"
                 )}
               >
-                <Icon className="h-5 w-5" />
-                <span className="font-medium">{item.name}</span>
+                <div className="flex items-center space-x-3">
+                  <Icon className="h-5 w-5" />
+                  <span className="font-medium">{item.name}</span>
+                </div>
+                {item.isPremium && isPremium && (
+                  <span className="text-yellow-400">👑</span>
+                )}
               </Link>
             );
           })}
-          
-
         </nav>
 
         {/* Sidebar Footer */}
