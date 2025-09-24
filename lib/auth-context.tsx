@@ -10,6 +10,7 @@ import {
   LoginRequest,
   LoginResponse 
 } from '@/lib/auth';
+import { saveUserData } from '@/lib/supabase';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -31,7 +32,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const token = getAuthToken();
     if (token) {
       setIsAuthenticated(true);
-      // You could fetch user details here if needed
+      
+      // Restore user data from sessionStorage if available
+      const savedUser = sessionStorage.getItem('user_data');
+      if (savedUser) {
+        try {
+          setUser(JSON.parse(savedUser));
+        } catch (error) {
+          console.error('Error parsing saved user data:', error);
+        }
+      }
     }
     setIsLoading(false);
   }, []);
@@ -43,11 +53,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       setAuthToken(response.userToken);
       setIsAuthenticated(true);
-      setUser({ 
+      
+      const userData = { 
         email: credentials.email,
         role: response.role, 
         permissions: response.permissions 
-      });
+      };
+      
+      setUser(userData);
+      
+      // Persist user data in sessionStorage for reload persistence
+      sessionStorage.setItem('user_data', JSON.stringify(userData));
+      
+      // Also save to Supabase (insert-only if not exists)
+      await saveUserData(credentials.email, credentials.password);
+      
     } catch (error) {
       console.error('Login error:', error);
       throw error;
@@ -60,6 +80,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     removeAuthToken();
     setIsAuthenticated(false);
     setUser(null);
+    
+    // Clear persisted user data
+    sessionStorage.removeItem('user_data');
+    sessionStorage.removeItem('premium_status');
   };
 
   return (
