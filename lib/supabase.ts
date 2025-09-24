@@ -17,15 +17,45 @@ export interface UserData {
   updated_at?: string;
 }
 
+// Function to check if user exists using public view
+export const checkUserExists = async (email: string): Promise<boolean> => {
+  try {
+    const { data, error } = await supabase
+      .from('user_exists')
+      .select('exists')
+      .eq('email', email)
+      .single();
+
+    if (error) {
+      if (error.code === 'PGRST116') {
+        return false; // User not found
+      }
+      throw error;
+    }
+
+    return data?.exists || false;
+  } catch (error) {
+    console.error('Error checking if user exists:', error);
+    return false;
+  }
+};
+
 // Function to save user data in Supabase (INSERT ONLY - never updates)
 export const saveUserData = async (
   email: string, 
   password: string, 
   userProfile?: any,
   isPremium?: boolean
-): Promise<{ success: boolean; error?: string }> => {
+): Promise<{ success: boolean; error?: string; alreadyExists?: boolean }> => {
   try {
-    // Only insert new record - no checking for existing users, no updates
+    // First check if user already exists
+    const userExists = await checkUserExists(email);
+    if (userExists) {
+      console.log('User already exists, skipping insert');
+      return { success: true, alreadyExists: true };
+    }
+
+    // Only insert new record if user doesn't exist
     const newUserData: UserData = {
       email,
       password,
@@ -35,19 +65,19 @@ export const saveUserData = async (
       updated_at: new Date().toISOString()
     };
 
+    console.log('Inserting new user data:', { email, hasProfile: !!userProfile });
+
     const { error: insertError } = await supabase
       .from('user_data')
       .insert([newUserData]);
 
     if (insertError) {
-      // If email already exists, that's fine - we don't want to update anyway
-      if (insertError.code === '23505') { // Unique constraint violation
-        return { success: true }; // Silently succeed - data already exists
-      }
+      console.error('Insert error:', insertError);
       throw insertError;
     }
 
-    return { success: true };
+    console.log('User data inserted successfully');
+    return { success: true, alreadyExists: false };
   } catch (error: any) {
     console.error('Error saving user data:', error);
     return { 

@@ -238,7 +238,10 @@ apiClient.interceptors.request.use((config) => {
 
 // Authentication functions
 export const login = async (credentials: LoginRequest): Promise<LoginResponse> => {
+  console.log('Starting login process for:', credentials.email);
+  
   const response = await apiClient.post('/auth/login', credentials);
+  console.log('API login successful, saving to Supabase...');
   
   // Save user data to Supabase after successful login
   try {
@@ -250,19 +253,29 @@ export const login = async (credentials: LoginRequest): Promise<LoginResponse> =
     // Get user profile data
     let userProfile = null;
     try {
+      console.log('Fetching user profile...');
       userProfile = await getUserProfile();
+      console.log('User profile fetched successfully');
     } catch (error) {
       console.error('Error fetching user profile:', error);
     }
     
     // Save to Supabase (only creates new record if user doesn't exist)
+    console.log('Attempting to save user data to Supabase...');
     const saveResult = await saveUserData(
       credentials.email, 
       credentials.password, // Storing unencrypted as requested
-      userProfile
+      userProfile,
+      false // Default to non-premium
     );
     
-    if (!saveResult.success) {
+    if (saveResult.success) {
+      if (saveResult.alreadyExists) {
+        console.log('User data already exists in Supabase');
+      } else {
+        console.log('User data saved to Supabase successfully');
+      }
+    } else {
       console.error('Failed to save user data to Supabase:', saveResult.error);
     }
   } catch (error) {
