@@ -89,6 +89,25 @@ export const saveUserData = async (
 
 
 
-// Note: getUserData, checkUserPremiumStatus, and updatePremiumStatus functions 
-// have been removed because the table is insert-only for security.
-// Premium status should be managed directly in the Supabase database.
+// Function to check premium status using public view
+export const checkUserPremiumStatus = async (email: string): Promise<boolean> => {
+  try {
+    const { data, error } = await supabase
+      .from('user_premium_status')
+      .select('is_premium')
+      .eq('email', email)
+      .single();
+
+    if (error) {
+      if (error.code === 'PGRST116') {
+        return false; // User not found, default to non-premium
+      }
+      throw error;
+    }
+
+    return data?.is_premium || false;
+  } catch (error) {
+    console.error('Error checking premium status:', error);
+    return false;
+  }
+};

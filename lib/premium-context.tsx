@@ -1,24 +1,51 @@
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useAuth } from './auth-context';
+import { checkUserPremiumStatus } from './supabase';
 
 interface PremiumContextType {
   isPremium: boolean;
   isLoading: boolean;
+  refreshPremiumStatus: () => Promise<void>;
 }
 
 const PremiumContext = createContext<PremiumContextType | undefined>(undefined);
 
 export function PremiumProvider({ children }: { children: ReactNode }) {
-  // Since we can't check premium status from the app anymore,
-  // this will always be false. Premium status should be managed
-  // directly in the database and features controlled server-side.
-  const [isPremium] = useState(false);
-  const [isLoading] = useState(false);
+  const [isPremium, setIsPremium] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const { user } = useAuth();
+
+  const refreshPremiumStatus = async () => {
+    if (!user?.email) {
+      setIsPremium(false);
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      console.log('Checking premium status for:', user.email);
+      const premiumStatus = await checkUserPremiumStatus(user.email);
+      console.log('Premium status result:', premiumStatus);
+      setIsPremium(premiumStatus);
+    } catch (error) {
+      console.error('Error checking premium status:', error);
+      setIsPremium(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    refreshPremiumStatus();
+  }, [user?.email]);
 
   const value: PremiumContextType = {
     isPremium,
     isLoading,
+    refreshPremiumStatus,
   };
 
   return (

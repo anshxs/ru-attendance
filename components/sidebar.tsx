@@ -25,7 +25,7 @@ interface SidebarProps {
   isOpen: boolean;
   onToggle: () => void;
 }
-
+ 
 const sidebarItems = [
   {
     name: 'Dashboard',
