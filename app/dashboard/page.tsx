@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ProtectedRoute } from '@/components/protected-route';
 import { DashboardLayout } from '@/components/dashboard-layout';
 import { Users, Key, GraduationCap, Mail, Phone, Home, Loader2, AlertCircle, Download, FileText, Image, File } from 'lucide-react';
+import { MagicCard } from '@/components/ui/magic-card';
 
 function DashboardContent() {
   const { user } = useAuth();
@@ -86,6 +87,7 @@ function DashboardContent() {
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           
           {/* Basic Personal Info */}
+          <MagicCard className='p-2 rounded-2xl'>
           <Card className="bg-black border-zinc-800">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2 text-white">
@@ -134,8 +136,10 @@ function DashboardContent() {
               </div>
             </CardContent>
           </Card>
+          </MagicCard>
 
           {/* Contact Information */}
+          <MagicCard className='p-2 rounded-2xl'>
           <Card className="bg-black border-zinc-800">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2 text-white">
@@ -178,8 +182,10 @@ function DashboardContent() {
               </div>
             </CardContent>
           </Card>
+          </MagicCard>
 
           {/* Academic Information */}
+          <MagicCard className='p-2 rounded-2xl'>
           <Card className="bg-black border-zinc-800">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2 text-white">
@@ -228,8 +234,10 @@ function DashboardContent() {
               </div>
             </CardContent>
           </Card>
+          </MagicCard>
 
           {/* Family Information */}
+          <MagicCard className='p-2 rounded-2xl'>
           <Card className="bg-black border-zinc-800">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2 text-white">
@@ -284,8 +292,10 @@ function DashboardContent() {
               </div>
             </CardContent>
           </Card>
+          </MagicCard>
 
           {/* Accommodation */}
+          <MagicCard className='p-2 rounded-2xl'>
           <Card className="bg-black border-zinc-800">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2 text-white">
@@ -314,8 +324,10 @@ function DashboardContent() {
               </div>
             </CardContent>
           </Card>
+          </MagicCard>
 
           {/* Documents & IDs */}
+          <MagicCard className='p-2 rounded-2xl'>
           <Card className="bg-black border-zinc-800">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2 text-white">
@@ -338,10 +350,12 @@ function DashboardContent() {
               </div>
             </CardContent>
           </Card>
+          </MagicCard>
         </div>
 
         {/* Education History */}
         {userProfile?.educationHistory && userProfile.educationHistory.length > 0 && (
+          <MagicCard className='p-2 rounded-2xl'>
           <Card className="bg-black border-zinc-800">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2 text-white">
@@ -383,9 +397,11 @@ function DashboardContent() {
               </div>
             </CardContent>
           </Card>
+          </MagicCard>
         )}
 
         {/* Financial Information */}
+        <MagicCard className='p-2 rounded-2xl'>
         <Card className="bg-black border-zinc-800">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2 text-white">
@@ -410,8 +426,10 @@ function DashboardContent() {
             </div>
           </CardContent>
         </Card>
+        </MagicCard>
 
         {/* Documents & Downloads */}
+        <MagicCard className='p-2 rounded-2xl'>
         <Card className="bg-black border-zinc-800">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2 text-white">
@@ -790,8 +808,10 @@ function DashboardContent() {
             </div>
           </CardContent>
         </Card>
+        </MagicCard>
 
         {/* Access Token Display */}
+        <MagicCard className='p-2 rounded-2xl'>
         <Card className="bg-black border-zinc-800">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2 text-white">
@@ -810,6 +830,7 @@ function DashboardContent() {
             </div>
           </CardContent>
         </Card>
+        </MagicCard>
       </div>
     </DashboardLayout>
   );

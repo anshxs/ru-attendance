@@ -32,6 +32,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { MagicCard } from '@/components/ui/magic-card';
 
 function CoursesContent() {
   const { user } = useAuth();
@@ -166,6 +167,7 @@ function CoursesContent() {
       <DashboardLayout>
         <div className="min-h-screen bg-black p-6">
           <div className="max-w-md mx-auto mt-10">
+            <MagicCard className='p-2 rounded-2xl'>
             <Card className="bg-black border-red-800">
               <CardContent className="pt-6">
                 <div className="text-center space-y-4">
@@ -189,6 +191,7 @@ function CoursesContent() {
                 </div>
               </CardContent>
             </Card>
+            </MagicCard>
           </div>
         </div>
       </DashboardLayout>
@@ -229,6 +232,7 @@ function CoursesContent() {
           /* Courses View */
           <div className="space-y-6">
             {/* Program Info Card */}
+            <MagicCard className='p-2 rounded-2xl'>
             <Card className="bg-black border-zinc-800">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2 text-white">
@@ -255,11 +259,13 @@ function CoursesContent() {
                 </div>
               </CardContent>
             </Card>
+            </MagicCard>
 
             {/* Courses Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
               {semesterData?.courses.map((course) => (
-                <Card key={course.courseId} className="bg-black border-zinc-800 hover:border-zinc-600 transition-colors">
+                <MagicCard className='p-2 rounded-2xl' key={course.courseId}>
+                <Card key={course.courseId} className="bg-black border-zinc-800 transition-colors">
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div className="space-y-1">
@@ -310,10 +316,12 @@ function CoursesContent() {
                     </Button>
                   </CardContent>
                 </Card>
+                </MagicCard>
               ))}
             </div>
 
             {(!semesterData?.courses || semesterData.courses.length === 0) && (
+              <MagicCard className='p-2 rounded-2xl'>
               <Card className="bg-black border-zinc-800">
                 <CardContent className="pt-6">
                   <div className="text-center space-y-4">
@@ -327,6 +335,7 @@ function CoursesContent() {
                   </div>
                 </CardContent>
               </Card>
+              </MagicCard>
             )}
           </div>
         ) : (
@@ -335,6 +344,7 @@ function CoursesContent() {
             {courseAttendance && (
               <>
                 {/* Attendance Summary Card */}
+                <MagicCard className='p-2 rounded-2xl'>
                 <Card className="bg-black border-zinc-800">
                   <CardHeader>
                     <CardTitle className="flex items-center space-x-2 text-white">
@@ -392,8 +402,10 @@ function CoursesContent() {
                     </div>
                   </CardContent>
                 </Card>
+                </MagicCard>
 
                 {/* Course Details Card */}
+                <MagicCard className='p-2 rounded-2xl'>
                 <Card className="bg-black border-zinc-800">
                   <CardHeader>
                     <CardTitle className="flex items-center space-x-2 text-white">
@@ -420,8 +432,10 @@ function CoursesContent() {
                     </div>
                   </CardContent>
                 </Card>
+                </MagicCard>
 
                 {/* Lectures Table */}
+                <MagicCard className='p-2 rounded-2xl'>
                 <Card className="bg-black border-zinc-800">
                   <CardHeader>
                     <CardTitle className="flex items-center space-x-2 text-white">
@@ -494,6 +508,7 @@ function CoursesContent() {
                     </div>
                   </CardContent>
                 </Card>
+                </MagicCard>
               </>
             )}
           </div>

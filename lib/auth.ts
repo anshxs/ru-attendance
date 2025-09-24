@@ -162,6 +162,62 @@ export interface GatepassResponse {
   updatedAt: string;
 }
 
+export interface Gatepass {
+  id: string;
+  studentId: string;
+  outTime: string;
+  inTime: string;
+  outLocation: string;
+  reason: string;
+  status: 'CREATED' | 'APPROVED' | 'REJECTED';
+  createdAt: string;
+  updatedAt: string;
+  student: {
+    firstName: string;
+    lastName: string;
+  };
+}
+
+export interface GatepassListResponse {
+  data: Gatepass[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+export interface MessMenuItem {
+  id: number;
+  date: string;
+  mealType: 'BREAKFAST' | 'LUNCH' | 'SNACKS' | 'DINNER';
+  menuItems: string;
+  createdAt: string;
+  updatedAt: string;
+  updatedBy: string | null;
+  deletedAt: string | null;
+}
+
+export interface MessTimings {
+  id: number;
+  BREAKFAST: string;
+  LUNCH: string;
+  SNACKS: string;
+  DINNER: string;
+  updatedAt: string;
+  updatedBy: string | null;
+}
+
+export interface MessMenuResponse {
+  todaysmenu: MessMenuItem[];
+  groupedMenu: {
+    BREAKFAST: string[];
+    LUNCH: string[];
+    SNACKS: string[];
+    DINNER: string[];
+  };
+  timings: MessTimings;
+}
+
 // Create axios instance with base configuration
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -231,6 +287,39 @@ export const getUserCourses = async (studentId: string): Promise<SemesterData> =
 
 export const getCourseAttendance = async (studentId: string, courseId: string): Promise<CourseAttendance> => {
   const response = await apiClient.get(`/students/${studentId}/courses/${courseId}/attendance`);
+  return response.data;
+};
+
+// Get all gatepasses with pagination
+export const getAllGatepasses = async (params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  sortBy?: string;
+  order?: 'asc' | 'desc';
+  status?: string;
+}): Promise<GatepassListResponse> => {
+  const response = await apiClient.get('/gatepass', { params });
+  return response.data;
+};
+
+// Get user's own gatepasses
+export const getUserGatepasses = async (params?: {
+  page?: number;
+  limit?: number;
+  sortBy?: string;
+  order?: 'asc' | 'desc';
+  status?: string;
+}): Promise<Gatepass[]> => {
+  const response = await apiClient.get('/gatepass/self', { params });
+  return response.data;
+};
+
+// Get mess menu for a specific date
+export const getMessMenu = async (date: string): Promise<MessMenuResponse> => {
+  const response = await apiClient.get('/mess', {
+    params: { date }
+  });
   return response.data;
 };
 

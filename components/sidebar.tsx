@@ -11,11 +11,13 @@ import {
   Menu,
   X,
   Calendar,
-  BookOpen
+  BookOpen,
+  Users,
+  Utensils
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/auth-context';
-import { CalendarDialog } from '@/components/calendar-dialog';
+import { AnimatedGradientText } from './ui/animated-gradient-text';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -34,9 +36,24 @@ const sidebarItems = [
     icon: BookOpen,
   },
   {
-    name: 'Gatepass',
+    name: 'Calendar',
+    href: '/calendar',
+    icon: Calendar,
+  },
+  {
+    name: 'Mess Menu',
+    href: '/mess',
+    icon: Utensils,
+  },
+  {
+    name: 'My Gatepasses',
     href: '/gatepass',
     icon: CreditCard,
+  },
+  {
+    name: 'All Gatepasses',
+    href: '/gatepasses',
+    icon: Users,
   },
 ];
 
@@ -61,7 +78,7 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
       )}>
         {/* Sidebar Header */}
         <div className="flex items-center justify-between p-4 border-b border-zinc-800">
-          <h2 className="text-xl font-bold text-white">Rishiverse</h2>
+          <h2 className="text-xl font-bold text-white"><AnimatedGradientText>Rishiverse - V2</AnimatedGradientText></h2>
           <Button
             variant="ghost"
             size="icon"
@@ -96,21 +113,11 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
             );
           })}
           
-          {/* Calendar Dialog Trigger */}
-          <CalendarDialog>
-            <button
-              className={cn(
-                "w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors duration-200 text-zinc-300 hover:bg-zinc-900 hover:text-white"
-              )}
-            >
-              <Calendar className="h-5 w-5" />
-              <span className="font-medium">Calendar</span>
-            </button>
-          </CalendarDialog>
+
         </nav>
 
         {/* Sidebar Footer */}
-        <div className="border-t border-zinc-800 p-4">
+        <div className="border-t border-zinc-800  p-4">
           <Button
             onClick={logout}
             variant="ghost"

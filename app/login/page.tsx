@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import ResetPasswordPage from '@/components/reset-password';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { AnimatedGradientText } from '@/components/ui/animated-gradient-text';
+import { MagicCard } from '@/components/ui/magic-card';
 
 interface LoginForm {
   email: string;
@@ -133,7 +134,8 @@ export default function LoginPage() {
               <ResetPasswordPage onBack={() => setShowResetPassword(false)} />
             </div>
           ) : (
-            <Card className="bg-[#171717] backdrop-blur-sm">
+            <MagicCard className='p-2 rounded-2xl'>
+            <Card className="bg-[#101010] backdrop-blur-sm">
               <CardHeader className="space-y-2 lg:hidden">
                 <CardTitle className="text-2xl text-center text-white">
                   Login
@@ -228,6 +230,7 @@ export default function LoginPage() {
                 </div>
               </CardContent>
             </Card>
+            </MagicCard>
           )}
         </div>
       </div>
