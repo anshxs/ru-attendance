@@ -15,8 +15,7 @@ import {
   Users,
   Utensils,
   Lock,
-  FolderOpen,
-  Shield
+  FolderOpen
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/auth-context';
@@ -58,13 +57,6 @@ const sidebarItems = [
     href: '/directory',
     icon: FolderOpen,
     isPremium: false,
-  },
-  {
-    name: 'Login Logs',
-    href: '/login-logs',
-    icon: Shield,
-    isPremium: true,
-    premiumName: '👑 Login Logs',
   },
   {
     name: 'My Gatepasses',
