@@ -122,7 +122,7 @@ function AllGatepassesContent() {
         <div className="min-h-screen bg-black p-6">
           <div className="max-w-md mx-auto mt-10">
             <MagicCard className='p-2 rounded-2xl'>
-            <Card className="bg-black border-red-800">
+            <Card className="bg-[#101010] border-red-800">
               <CardContent className="pt-6">
                 <div className="text-center space-y-4">
                   <AlertCircle className="h-16 w-16 text-red-400 mx-auto" />
@@ -163,7 +163,7 @@ function AllGatepassesContent() {
 
         {/* Filters */}
         <MagicCard className='p-2 rounded-2xl'>
-        <Card className="bg-black border-zinc-800">
+        <Card className="bg-[#101010] border-zinc-800">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2 text-white">
               <Filter className="h-5 w-5" />
@@ -212,7 +212,7 @@ function AllGatepassesContent() {
           <div className="space-y-4">
             {gatepasses.data.map((gatepass) => (
             <MagicCard className='p-2 rounded-2xl' key={gatepass.id}>
-              <Card key={gatepass.id} className="bg-black border-zinc-800">
+              <Card key={gatepass.id} className="bg-[#101010] border-zinc-800">
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
                     <div className="space-y-1 flex-1">

@@ -9,6 +9,7 @@ import { Select } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { ProtectedRoute } from '@/components/protected-route';
 import { DashboardLayout } from '@/components/dashboard-layout';
+import { MagicCard } from '@/components/ui/magic-card';
 
 interface User {
   userId: number;
@@ -129,7 +130,7 @@ function DirectoryContent() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold mb-2 bg-white bg-clip-text text-transparent">
             Directory
           </h1>
           <p className="text-zinc-400">
@@ -138,7 +139,7 @@ function DirectoryContent() {
         </div>
 
         {/* Search and Filters */}
-        <Card className="bg-black mb-6">
+        <Card className="bg-[#101010] mb-6">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white">
               <Filter className="h-5 w-5" />
@@ -153,7 +154,7 @@ function DirectoryContent() {
                 placeholder="Search by name, email, roll number, or course..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-black border-white/20 text-white outline-none"
+                className="pl-10 bg-[#101010] border-white/20 text-white outline-none"
               />
             </div>
 
@@ -164,7 +165,7 @@ function DirectoryContent() {
                 <select
                   value={selectedCourse}
                   onChange={(e) => setSelectedCourse(e.target.value)}
-                  className="w-full p-2 bg-black border border-white/20 rounded-md text-white outline-none"
+                  className="w-full p-2 bg-[#101010] border border-white/20 rounded-md text-white outline-none"
                 >
                   <option value="all">All Courses</option>
                   {uniqueCourses.map(course => (
@@ -178,7 +179,7 @@ function DirectoryContent() {
                 <select
                   value={selectedBatch}
                   onChange={(e) => setSelectedBatch(e.target.value)}
-                  className="w-full p-2 bg-black border border-white/20 rounded-md text-white outline-none"
+                  className="w-full p-2 bg-[#101010] border border-white/20 rounded-md text-white outline-none"
                 >
                   <option value="all">All Batches</option>
                   {uniqueBatches.map(batch => (
@@ -192,7 +193,7 @@ function DirectoryContent() {
                 <select
                   value={selectedUserType}
                   onChange={(e) => setSelectedUserType(e.target.value)}
-                    className="w-full p-2 bg-black border border-white/20 rounded-md text-white outline-none"
+                    className="w-full p-2 bg-[#101010] border border-white/20 rounded-md text-white outline-none"
                     >
                   <option value="all">All Types</option>
                   {uniqueUserTypes.map(type => (
@@ -220,7 +221,7 @@ function DirectoryContent() {
 
         {/* Results */}
         {filteredData.length === 0 ? (
-          <Card className="bg-black border-gray-800">
+          <Card className="bg-black ">
             <CardContent className="text-center py-12">
               <Users className="h-16 w-16 text-gray-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2 text-white">No users found</h3>
@@ -230,9 +231,10 @@ function DirectoryContent() {
         ) : (
           <>
             {/* User Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
               {currentData.map((user) => (
-                <Card key={user.userId} className="bg-black border-gray-800 hover:border-gray-600 transition-colors">
+                <MagicCard className='p-2 rounded-2xl'>
+                <Card key={user.userId} className="bg-[#101010] transition-colors">
                   <CardContent className="p-4">
                     <div className="flex items-start space-x-3">
                       <div className="flex-shrink-0">
@@ -282,12 +284,13 @@ function DirectoryContent() {
                     </div>
                   </CardContent>
                 </Card>
+                </MagicCard>
               ))}
             </div>
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <Card className="bg-black border-gray-800">
+              <Card className="bg-black">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div className="text-sm text-gray-400">

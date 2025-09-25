@@ -178,7 +178,7 @@ function MessMenuContent() {
 
         {/* Date Navigation */}
         <MagicCard className='p-2 rounded-2xl'>
-        <Card className="bg-black border-zinc-800">
+        <Card className="bg-[#101010] border-zinc-800">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <Button
@@ -235,7 +235,7 @@ function MessMenuContent() {
           <div className="space-y-6">
             {/* Meal Timings Overview */}
             <MagicCard className='p-2 rounded-2xl'>
-            <Card className="bg-black border-zinc-800">
+            <Card className="bg-[#101010] border-zinc-800">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2 text-white">
                   <Clock className="h-5 w-5" />
@@ -255,8 +255,8 @@ function MessMenuContent() {
                         key={meal} 
                         className={`p-3 rounded-lg border ${
                           isCurrentMeal 
-                            ? 'bg-zinc-900 border-zinc-600' 
-                            : 'bg-zinc-950 border-zinc-800'
+                            ? 'bg-black border-blue-600' 
+                            : 'bg-[#090909]'
                         }`}
                       >
                         <div className="flex items-center space-x-2 mb-1">
@@ -287,8 +287,8 @@ function MessMenuContent() {
                   <MagicCard className='p-2 rounded-2xl' key={mealType}>
                   <Card 
                     key={mealType} 
-                    className={`bg-black border-zinc-800 ${
-                      isCurrentMeal ? 'ring-2 ring-green-600' : ''
+                    className={`bg-[#101010] border-zinc-800 ${
+                      isCurrentMeal ? 'ring-2 ring-blue-600' : ''
                     }`}
                   >
                     <CardHeader>
@@ -334,7 +334,7 @@ function MessMenuContent() {
 
             {/* Additional Info */}
             <MagicCard className='p-2 rounded-2xl'>
-            <Card className="bg-black border-zinc-800">
+            <Card className="bg-[#101010] border-zinc-800">
               <CardContent className="pt-6">
                 <div className="text-center space-y-2">
                   <p className="text-sm text-zinc-400">

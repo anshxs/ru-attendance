@@ -445,7 +445,7 @@ function GatepassContent() {
           <div className="space-y-4">
             {myGatepasses.map((gatepass: Gatepass) => (
               <MagicCard className='p-2 rounded-2xl' key={gatepass.id}>
-              <Card key={gatepass.id} className="bg-black border-zinc-800">
+              <Card key={gatepass.id} className="bg-[#101010] border-zinc-800">
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className="space-y-1">
