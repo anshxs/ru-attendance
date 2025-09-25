@@ -284,7 +284,7 @@ function MessMenuContent() {
                 const timing = messMenu.timings[mealType as keyof typeof messMenu.timings];
                 
                 return (
-                  <MagicCard className='p-2 rounded-2xl'>
+                  <MagicCard className='p-2 rounded-2xl' key={mealType}>
                   <Card 
                     key={mealType} 
                     className={`bg-black border-zinc-800 ${

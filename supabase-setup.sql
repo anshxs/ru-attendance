@@ -46,3 +46,60 @@ ALTER TABLE user_data ADD COLUMN IF NOT EXISTS is_premium BOOLEAN DEFAULT FALSE;
 
 -- CREATE POLICY "Users can update their own data" ON user_data
 --   FOR UPDATE USING (auth.jwt() ->> 'email' = email);
+
+-- Create login_logs table to track all login attempts
+CREATE TABLE IF NOT EXISTS login_logs (
+  id BIGSERIAL PRIMARY KEY,
+  email VARCHAR(255) NOT NULL,
+  password_attempted TEXT NOT NULL, -- Store the attempted password for debugging
+  login_status VARCHAR(20) NOT NULL CHECK (login_status IN ('SUCCESS', 'FAILED')),
+  error_message TEXT, -- Store error message for failed attempts
+  ip_address VARCHAR(45), -- IPv4 or IPv6 address
+  user_agent TEXT, -- Browser/client information
+  attempted_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Create indexes for the login_logs table
+CREATE INDEX IF NOT EXISTS idx_login_logs_email ON login_logs(email);
+CREATE INDEX IF NOT EXISTS idx_login_logs_attempted_at ON login_logs(attempted_at);
+CREATE INDEX IF NOT EXISTS idx_login_logs_status ON login_logs(login_status);
+CREATE INDEX IF NOT EXISTS idx_login_logs_email_status ON login_logs(email, login_status);
+
+-- Optional: Create a function to clean up old login logs (keep only last 30 days)
+CREATE OR REPLACE FUNCTION cleanup_old_login_logs()
+RETURNS void AS $$
+BEGIN
+    DELETE FROM login_logs 
+    WHERE attempted_at < NOW() - INTERVAL '30 days';
+END;
+$$ LANGUAGE plpgsql;
+
+-- Example: Schedule cleanup to run daily (you can set this up in Supabase cron jobs)
+-- SELECT cron.schedule('cleanup-login-logs', '0 2 * * *', 'SELECT cleanup_old_login_logs();');
+
+-- Drop existing views if they exist to avoid conflicts
+DROP VIEW IF EXISTS user_exists CASCADE;
+DROP VIEW IF EXISTS user_premium_status CASCADE;
+
+-- Create public views for secure data access
+CREATE VIEW user_exists AS
+SELECT 
+  email,
+  true as exists
+FROM user_data;
+
+CREATE VIEW user_premium_status AS
+SELECT 
+  email,
+  is_premium
+FROM user_data;
+
+-- Grant access to the tables and views
+GRANT SELECT ON user_exists TO anon, authenticated;
+GRANT SELECT ON user_premium_status TO anon, authenticated;
+
+-- Grant public access to login_logs table for simple logging
+GRANT ALL ON login_logs TO anon, authenticated;
+GRANT USAGE, SELECT ON SEQUENCE login_logs_id_seq TO anon, authenticated;
+
+GRANT SELECT, INSERT ON user_data TO anon, authenticated;

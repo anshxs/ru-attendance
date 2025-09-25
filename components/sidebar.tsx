@@ -14,7 +14,9 @@ import {
   BookOpen,
   Users,
   Utensils,
-  Lock
+  Lock,
+  FolderOpen,
+  Shield
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/auth-context';
@@ -50,6 +52,19 @@ const sidebarItems = [
     href: '/mess',
     icon: Utensils,
     isPremium: false,
+  },
+  {
+    name: 'Directory',
+    href: '/directory',
+    icon: FolderOpen,
+    isPremium: false,
+  },
+  {
+    name: 'Login Logs',
+    href: '/login-logs',
+    icon: Shield,
+    isPremium: true,
+    premiumName: '👑 Login Logs',
   },
   {
     name: 'My Gatepasses',
