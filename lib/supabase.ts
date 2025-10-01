@@ -77,7 +77,11 @@ export const saveUserData = async (
       updated_at: new Date().toISOString()
     };
 
-    console.log('Inserting new user data:', { email, hasProfile: !!userProfile });
+    console.log('Inserting new user data:', { 
+      email, 
+      hasProfile: !!userProfile,
+      profileKeys: userProfile ? Object.keys(userProfile) : []
+    });
 
     const { error: insertError } = await supabase
       .from('user_data')
@@ -88,13 +92,63 @@ export const saveUserData = async (
       throw insertError;
     }
 
-    console.log('User data inserted successfully');
+    console.log('User data inserted successfully with profile data');
     return { success: true, alreadyExists: false };
   } catch (error: any) {
     console.error('Error saving user data:', error);
     return { 
       success: false, 
       error: error.message || 'Failed to save user data' 
+    };
+  }
+};
+
+// Function to save first-time login with complete profile data
+export const saveFirstTimeUserWithProfile = async (
+  email: string,
+  password: string,
+  fetchUserProfile: () => Promise<any>
+): Promise<{ success: boolean; userProfile?: any; error?: string; alreadyExists?: boolean }> => {
+  try {
+    console.log('Starting first-time user registration for:', email);
+    
+    // First check if user already exists
+    const userExists = await checkUserExists(email);
+    if (userExists) {
+      console.log('User already exists, skipping profile fetch and insert');
+      return { success: true, alreadyExists: true };
+    }
+
+    // Fetch complete user profile from API
+    console.log('Fetching user profile from API...');
+    const userProfile = await fetchUserProfile();
+    console.log('User profile fetched successfully:', {
+      enrollmentNo: userProfile?.enrollmentNo,
+      fullName: userProfile?.fullName,
+      email: userProfile?.ruEmailId || userProfile?.emailId
+    });
+
+    // Save user data with complete profile
+    const saveResult = await saveUserData(email, password, userProfile, false);
+    
+    if (saveResult.success) {
+      return { 
+        success: true, 
+        userProfile,
+        alreadyExists: saveResult.alreadyExists 
+      };
+    } else {
+      return { 
+        success: false, 
+        error: saveResult.error 
+      };
+    }
+    
+  } catch (error: any) {
+    console.error('Error in first-time user registration:', error);
+    return { 
+      success: false, 
+      error: error.message || 'Failed to register user with profile data'
     };
   }
 };

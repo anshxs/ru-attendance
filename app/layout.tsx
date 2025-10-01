@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`font-sans ${geistSans.variable} ${geistMono.variable} bg-background text-foreground transition-colors duration-300`}>
+      <body className={`font-sans ${geistSans.variable} ${geistMono.variable} bg-white text-foreground transition-colors duration-300`}>
         <AuthProvider>
           <PremiumProvider>
             <Suspense fallback={null}>{children}</Suspense>

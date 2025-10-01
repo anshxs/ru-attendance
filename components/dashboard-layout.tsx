@@ -15,14 +15,15 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   };
 
   return (
-    <div className="flex h-screen bg-black">
+    <div className="flex h-screen bg-white">
       {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} onToggle={toggleSidebar} />
       
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden lg:ml-0">
         {/* Top Header */}
-        <header className="bg-black border-b border-zinc-800 px-4 py-3 flex items-center justify-between lg:justify-end">
+        <header className="bg-white px-4 py-3 flex items-center justify-between lg:justify-end">
+          {/* <p>Hello</p> */}
           <div className="flex items-center space-x-4">
             <SidebarTrigger onToggle={toggleSidebar} />
             <h1 className="text-xl font-semibold text-white lg:hidden">Dashboard</h1>
@@ -30,7 +31,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         </header>
         
         {/* Page Content */}
-        <main className="flex-1 overflow-auto bg-black scrollbar-hide">
+        <main className="flex-1 overflow-auto bg-white scrollbar-hide">
           {children}
         </main>
       </div>

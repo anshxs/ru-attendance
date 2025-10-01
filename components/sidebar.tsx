@@ -15,7 +15,8 @@ import {
   Users,
   Utensils,
   Lock,
-  FolderOpen
+  FolderOpen,
+  Building2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/auth-context';
@@ -35,7 +36,7 @@ const sidebarItems = [
     isPremium: false,
   },
   {
-    name: 'Courses',
+    name: 'Attendance',
     href: '/courses',
     icon: BookOpen,
     isPremium: false,
@@ -58,6 +59,12 @@ const sidebarItems = [
     icon: FolderOpen,
     isPremium: false,
   },
+  // {
+  //   name: 'Classrooms',
+  //   href: '/classrooms',
+  //   icon: Building2,
+  //   isPremium: false,
+  // },
   {
     name: 'My Gatepasses',
     href: '/gatepass',
@@ -84,18 +91,18 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
       {/* Mobile overlay */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden" 
+          className="fixed inset-0 bg-white z-40 lg:hidden" 
           onClick={onToggle}
         />
       )}
       
       {/* Sidebar */}
       <div className={cn(
-        "fixed left-0 top-0 z-50 h-full w-64 bg-black border-r border-zinc-800 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:z-auto",
+        "fixed left-0 top-0 z-50 h-full w-64 bg-white/70 border-r border-gray-100 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:z-auto",
         isOpen ? "translate-x-0" : "-translate-x-full"
       )}>
         {/* Sidebar Header */}
-        <div className="flex items-center justify-between p-4 border-b border-zinc-800">
+        <div className="flex items-center justify-between p-4 border-b border-gray-200">
           <h2 className="text-xl font-bold text-white"><AnimatedGradientText>Rishiverse - V2</AnimatedGradientText></h2>
           <Button
             variant="ghost"
@@ -127,13 +134,13 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
                 className={cn(
                   "flex items-center justify-between px-3 py-2 rounded-lg transition-colors duration-200",
                   isActive 
-                    ? "bg-white text-black" 
-                    : "text-zinc-300 hover:bg-zinc-900 hover:text-white"
+                    ? "bg-[#f0f0f0] border-0.5 border-gray-300 text-black" 
+                    : "text-black/80 hover:bg-[#F9F9F9]"
                 )}
               >
                 <div className="flex items-center space-x-3">
-                  <Icon className="h-5 w-5" />
-                  <span className="font-medium">{item.name}</span>
+                  <Icon className="h-4 w-4" />
+                  <span className="font-normal">{item.name}</span>
                 </div>
                 {item.isPremium && isPremium && (
                   <span className="text-yellow-400">👑</span>
@@ -144,13 +151,13 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
         </nav>
 
         {/* Sidebar Footer */}
-        <div className="border-t border-zinc-800  p-4">
+        <div className="border-t border-gray-200  p-4">
           <Button
             onClick={logout}
-            variant="ghost"
-            className="w-full justify-start text-zinc-300 hover:text-white hover:bg-zinc-900"
+            // variant="ghost"
+            className="w-full justify-start bg-white text-red-600 hover:text-red-500 hover:bg-red-50"
           >
-            <LogOut className="mr-3 h-5 w-5" />
+            <LogOut className=" h-5 w-5" />
             Logout
           </Button>
         </div>

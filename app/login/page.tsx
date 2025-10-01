@@ -134,7 +134,7 @@ export default function LoginPage() {
               <ResetPasswordPage onBack={() => setShowResetPassword(false)} />
             </div>
           ) : (
-            <MagicCard className='p-2 rounded-2xl'>
+            <MagicCard className="p-1 rounded-2xl border-gray-200 border">
             <Card className="bg-[#101010] backdrop-blur-sm">
               <CardHeader className="space-y-2 lg:hidden">
                 <CardTitle className="text-2xl text-center text-white">

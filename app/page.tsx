@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
-import { Loader2 } from 'lucide-react';
+import { Loader, Loader2, LoaderPinwheelIcon } from 'lucide-react';
 
 function Page() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -21,9 +21,9 @@ function Page() {
 
   // Show loading spinner while checking authentication
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black">
+    <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="text-center">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-500 mx-auto mb-4" />
+        <LoaderPinwheelIcon className="h-32 w-32 animate-spin text-blue-500 mx-auto mb-4" />
         <p className="text-gray-400">Loading...</p>
       </div>
     </div>

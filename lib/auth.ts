@@ -146,6 +146,30 @@ export interface UserProfile {
   [key: string]: any; // For other fields
 }
 
+export interface AttendanceSummary {
+  overall: {
+    totalLectures: number;
+    attendedLectures: number;
+    attendancePercentage: number;
+    absentLectures: number;
+    lateLectures: number;
+    excusedLectures: number;
+  };
+  byCourse: Array<{
+    courseId: string;
+    courseName: string;
+    courseCode: string;
+    totalLectures: number;
+    attendedLectures: number;
+    attendancePercentage: number;
+    credits: number;
+    section: {
+      id: string;
+      name: string;
+    };
+  }>;
+}
+
 export interface UpdateGatepassRequest {
   id: number;
   action: 'approve' | 'reject';
@@ -318,6 +342,13 @@ export const getCourseAttendance = async (studentId: string, courseId: string): 
   const response = await apiClient.get(`/students/${studentId}/courses/${courseId}/attendance`);
   return response.data;
 };
+
+export const getAttendanceSummary = async (studentId: string, semesterNumber: number): Promise<AttendanceSummary> => {
+  const response = await apiClient.get(`/students/${studentId}/${semesterNumber}/attendance/summary`);
+  return response.data;
+};
+
+
 
 // Get all gatepasses with pagination
 export const getAllGatepasses = async (params?: {

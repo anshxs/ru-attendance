@@ -121,7 +121,7 @@ function AllGatepassesContent() {
       <DashboardLayout>
         <div className="min-h-screen bg-black p-6">
           <div className="max-w-md mx-auto mt-10">
-            <MagicCard className='p-2 rounded-2xl'>
+            <MagicCard className="p-1 rounded-2xl border-gray-200 border">
             <Card className="bg-[#101010] border-red-800">
               <CardContent className="pt-6">
                 <div className="text-center space-y-4">
@@ -162,7 +162,7 @@ function AllGatepassesContent() {
         </div>
 
         {/* Filters */}
-        <MagicCard className='p-2 rounded-2xl'>
+        <MagicCard className="p-1 rounded-2xl border-gray-200 border">
         <Card className="bg-[#101010] border-zinc-800">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2 text-white">
@@ -339,7 +339,7 @@ function AllGatepassesContent() {
             </div>
           </div>
         ) : (
-            <MagicCard className='p-2 rounded-2xl'>
+            <MagicCard className="p-1 rounded-2xl border-gray-200 border">
           <Card className="bg-black border-zinc-800">
             <CardContent className="pt-6">
               <div className="text-center space-y-4">

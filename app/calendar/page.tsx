@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ProtectedRoute } from '@/components/protected-route';
 import { DashboardLayout } from '@/components/dashboard-layout';
-import { Calendar as CalendarIcon, Clock, MapPin, User, BookOpen, Utensils, Loader2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, MapPin, User, BookOpen, Utensils, Loader2, ChevronLeft, ChevronRight, LoaderPinwheelIcon, LoaderIcon } from 'lucide-react';
 import { getCalendarEvents, CalendarEvent } from '@/lib/auth';
 import { format, addDays, subDays, startOfWeek, endOfWeek, eachDayOfInterval } from 'date-fns';
 import { MagicCard } from '@/components/ui/magic-card';
@@ -14,7 +14,7 @@ function CalendarContent() {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [viewMode, setViewMode] = useState<'day' | 'week'>('week');
+  const [viewMode, setViewMode] = useState<'day' | 'week'>('day');
 
   const fetchEvents = async (startDate: Date, endDate: Date) => {
     try {
@@ -65,13 +65,26 @@ function CalendarContent() {
   const getEventColor = (type: string) => {
     switch (type) {
       case 'LECTURE':
-        return 'bg-blue-900/30 border-blue-900 text-blue-300';
+        return 'bg-blue-700 border-blue-700 text-white';
       case 'MESS':
-        return 'bg-green-900/30 border-green-900 text-green-300';
+        return 'bg-green-700 border-green-700 text-white';
       case 'CLUB_EVENT':
-        return 'bg-purple-900/30 border-purple-900 text-purple-300';
+        return 'bg-purple-700 border-purple-700 text-white';
       default:
-        return 'bg-amber-900/30 border-zinc-900 text-zinc-300';
+        return 'bg-amber-700 border-zinc-700 text-white';
+    }
+  };
+
+  const getEventColorTw = (type: string) => {
+    switch (type) {
+      case 'LECTURE':
+        return 'bg-blue-300 text-black';
+      case 'MESS':
+        return 'bg-green-300 text-black';
+      case 'CLUB_EVENT':
+        return 'bg-purple-300 text-black';
+      default:
+        return 'bg-amber-300 text-black';
     }
   };
 
@@ -85,27 +98,27 @@ function CalendarContent() {
     return (
       <div className="space-y-4">
         <div className="text-center">
-          <h3 className="text-2xl font-semibold text-white mb-6">
+          <h3 className="text-2xl font-semibold text-black mb-6">
             {format(selectedDate, 'EEEE, MMMM dd, yyyy')}
           </h3>
         </div>
         
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="h-8 w-8 animate-spin text-white" />
+            <LoaderIcon className="h-8 w-8 animate-spin text-blue-400" />
           </div>
         ) : dayEvents.length > 0 ? (
           <div className="grid gap-4">
             {dayEvents.map((event) => (
-              <MagicCard className='p-2 rounded-2xl'>
-              <Card key={event.id} className={`border ${getEventColor(event.type)} bg-black/50`}>
+              <MagicCard key={event.id} className="p-1 rounded-2xl border-gray-200 border">
+              <Card key={event.id} className={`border-0 text-black bg-[#f0f0f0]`}>
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex items-center space-x-3">
                       {getEventIcon(event.type)}
                       <h4 className="font-semibold text-lg">{event.title}</h4>
                     </div>
-                    <span className="text-sm px-2 py-1 bg-zinc-900 rounded">{event.type}</span>
+                    <span className={`text-sm px-2 py-1 bg-black ${getEventColor(event.type)} font-medium text-xs rounded-lg`}>{event.type}</span>
                   </div>
                   
                   <div className="space-y-2 text-sm">
@@ -181,14 +194,14 @@ function CalendarContent() {
               });
 
               return (
-                <MagicCard className='p-2 rounded-2xl'>
-                <Card key={dayStr} className="bg-black border-zinc-800 min-h-[200px]">
+                // <MagicCard className="p-1 rounded-2xl border-gray-200 border">
+                <Card key={dayStr} className="bg-[#f0f0f0] min-h-[200px]">
                   <CardContent className="p-3">
                     <div className="text-center mb-3">
-                      <h4 className="font-semibold text-white">
+                      <h4 className="font-semibold text-black">
                         {format(day, 'EEE')}
                       </h4>
-                      <p className="text-sm text-zinc-400">
+                      <p className="text-sm text-zinc-600">
                         {format(day, 'MMM dd')}
                       </p>
                     </div>
@@ -196,7 +209,7 @@ function CalendarContent() {
                     {dayEvents.length > 0 ? (
                       <div className="space-y-2">
                         {dayEvents.map((event) => (
-                          <div key={event.id} className={`p-2 rounded border text-xs ${getEventColor(event.type)}`}>
+                          <div key={event.id} className={`p-2 rounded border text-xs ${getEventColorTw(event.type)}`}>
                             <div className="flex items-center space-x-1 mb-1">
                               {getEventIcon(event.type)}
                               <span className="font-medium truncate">{event.title}</span>
@@ -219,7 +232,7 @@ function CalendarContent() {
                     )}
                   </CardContent>
                 </Card>
-                </MagicCard>
+                // </MagicCard>
               );
             })}
           </div>
@@ -230,20 +243,20 @@ function CalendarContent() {
 
   return (
     <DashboardLayout>
-      <div className="min-h-screen bg-black p-6 space-y-6">
+      <div className="min-h-screen bg-white p-6 space-y-6">
         {/* Page Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">Calendar</h1>
-            <p className="text-zinc-400">
+            <h1 className="text-3xl font-bold text-black mb-2">Calendar</h1>
+            <p className="text-zinc-600">
               View your schedule and upcoming events
             </p>
           </div>
           
           <div className="flex items-center space-x-4">
-            <div className="flex bg-zinc-900 rounded-lg p-1">
+            <div className="flex bg-[#f0f0f0] rounded-lg p-1">
               <Button
-                variant={viewMode === 'day' ? 'default' : 'ghost'}
+                variant={viewMode === 'day' ? 'secondary' : 'default'}
                 size="sm"
                 onClick={() => setViewMode('day')}
                 className="text-sm"
@@ -251,7 +264,7 @@ function CalendarContent() {
                 Day
               </Button>
               <Button
-                variant={viewMode === 'week' ? 'default' : 'ghost'}
+                variant={viewMode === 'week' ? 'secondary' : 'default'}
                 size="sm"
                 onClick={() => setViewMode('week')}
                 className="text-sm"
@@ -265,34 +278,34 @@ function CalendarContent() {
         {/* Navigation Controls */}
         <div className="flex items-center justify-center space-x-4 mb-6">
           <Button
-            variant="ghost"
+            // variant="ghost"
             onClick={() => navigateDate('prev')}
-            className="text-white hover:bg-zinc-900"
+            className="text-black hover:bg-[#ececec] hover:text-black bg-[#f0f0f0] cursor-pointer"
           >
-            <ChevronLeft className="h-4 w-4 mr-2" />
-            {viewMode === 'day' ? 'Previous Day' : 'Previous Week'}
+            <ChevronLeft className="h-4 w-4" />
+            Previous
           </Button>
           
           <Button
-            variant="outline"
+            // variant="outline"
             onClick={() => setSelectedDate(new Date())}
-            className="text-white border-zinc-700 hover:bg-zinc-900"
+            className="text-white hover:bg-black hover:text-white bg-[#080808] cursor-pointer"
           >
             Today
           </Button>
           
           <Button
-            variant="ghost"
+            // variant="ghost"
             onClick={() => navigateDate('next')}
-            className="text-white hover:bg-zinc-900"
+            className="text-black hover:bg-[#ececec] hover:text-black bg-[#f0f0f0] cursor-pointer"
           >
-            {viewMode === 'day' ? 'Next Day' : 'Next Week'}
+            Next
             <ChevronRight className="h-4 w-4 ml-2" />
           </Button>
         </div>
 
         {/* Calendar Content */}
-        <div className="text-white">
+        <div className="text-black">
           {viewMode === 'day' ? renderDayView() : renderWeekView()}
         </div>
       </div>

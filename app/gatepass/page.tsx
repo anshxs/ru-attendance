@@ -232,7 +232,7 @@ function GatepassContent() {
     return (
       <DashboardLayout>
         <div className="min-h-screen bg-black p-6">
-          <MagicCard className='p-2 rounded-2xl'>
+          <MagicCard className="p-1 rounded-2xl border-gray-200 border">
           <Card className="max-w-2xl mx-auto bg-black border-zinc-800">
             <CardContent className="pt-6">
               <div className="text-center space-y-4">
@@ -301,7 +301,7 @@ function GatepassContent() {
 
         {/* Create Gatepass Form */}
         {showCreateForm && (
-          <MagicCard className='p-2 rounded-2xl'>
+          <MagicCard className="p-1 rounded-2xl border-gray-200 border">
           <Card className="bg-black border-zinc-800 mb-6">
             <CardHeader>
               <CardTitle className="text-white">Create New Gatepass</CardTitle>
@@ -387,7 +387,7 @@ function GatepassContent() {
 
         {/* Approve by ID Form */}
         {showApproveById && (
-          <MagicCard className='p-2 rounded-2xl'>
+          <MagicCard className="p-1 rounded-2xl border-gray-200 border">
           <Card className="bg-black border-zinc-800 mb-6">
             <CardHeader>
               <CardTitle className="text-white">Approve Gatepass by ID</CardTitle>
@@ -545,7 +545,7 @@ function GatepassContent() {
             )}
           </div>
         ) : (
-          <MagicCard className='p-2 rounded-2xl'>
+          <MagicCard className="p-1 rounded-2xl border-gray-200 border">
           <Card className="bg-black border-zinc-800">
             <CardContent className="pt-6">
               <div className="text-center space-y-4">
